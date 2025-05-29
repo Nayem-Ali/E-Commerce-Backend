@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAllByTitle(String string);
-    @Query(value = "SELECT * FROM product WHERE fk_category_id = :categoryId", nativeQuery = true)
+    @Query(value = "SELECT * FROM products WHERE fk_category_id = :categoryId", nativeQuery = true)
     List<Product> getAllTodosByCategory(@Param("categoryId") Long categoryId);
 }

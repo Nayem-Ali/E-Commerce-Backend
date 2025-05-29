@@ -34,6 +34,12 @@ public class CategoryService implements ICategoryService{
     public Category updateCategory(Long id, UpdateCategoryRequest updateCategoryRequest) {
         Category category = getCategoryById(id);
         // TODO: Check values and then update them accordingly
+        if(updateCategoryRequest.getName() != null){
+            category.setName(updateCategoryRequest.getName());
+        }
+        if(updateCategoryRequest.getDescription() != null){
+            category.setDescription(updateCategoryRequest.getDescription());
+        }
         return categoryRepository.save(category);
     }
 

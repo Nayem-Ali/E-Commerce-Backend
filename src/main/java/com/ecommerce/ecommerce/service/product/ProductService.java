@@ -1,5 +1,6 @@
 package com.ecommerce.ecommerce.service.product;
 
+import com.ecommerce.ecommerce.EcommerceApplication;
 import com.ecommerce.ecommerce.exception.ProductNotFoundException;
 import com.ecommerce.ecommerce.model.Category;
 import com.ecommerce.ecommerce.model.Product;
@@ -35,7 +36,7 @@ public class ProductService implements IProductService {
     public Product addProduct(AddProductRequest addProductRequest, MultipartFile imageFile) {
         try {
             Product product = addProductRequest.createProduct();
-            if(addProductRequest.getCategoryId() != null){
+            if (addProductRequest.getCategoryId() != null) {
                 Category category = categoryService.getCategoryById(addProductRequest.getCategoryId());
                 product.setCategory(category);
             }
@@ -50,7 +51,43 @@ public class ProductService implements IProductService {
 
     @Override
     public Product updateProduct(Long id, UpdateProductRequest updateProductRequest, MultipartFile imageFile) {
-        return null;
+        Product product = getProductById(id);
+        try {
+            if (updateProductRequest.getTitle() != null) {
+                product.setTitle(updateProductRequest.getTitle());
+            }
+            if (updateProductRequest.getDescription() != null) {
+                product.setDescription(updateProductRequest.getDescription());
+            }
+            if (updateProductRequest.getBrand() != null) {
+                product.setBrand(updateProductRequest.getBrand());
+            }
+            if (updateProductRequest.getPrice() != null) {
+                product.setPrice(updateProductRequest.getPrice());
+            }
+            if (updateProductRequest.getAvailability() != null) {
+                product.setAvailability(updateProductRequest.getAvailability());
+            }
+            if (updateProductRequest.getStockQuantity() != null) {
+                product.setStockQuantity(updateProductRequest.getStockQuantity());
+            }
+            ///  Update Image
+            if (!imageFile.isEmpty()) {
+                product.setThumbnailName(imageFile.getOriginalFilename());
+                product.setThumbnailType(imageFile.getContentType());
+                product.setThumbnailData(imageFile.getBytes());
+            }
+            /// Update Category
+            if(updateProductRequest.getCategoryId() != null){
+                Category category = categoryService.getCategoryById(updateProductRequest.getCategoryId());
+                product.setCategory(category);
+            }
+            return  productRepository.save(product);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
     @Override

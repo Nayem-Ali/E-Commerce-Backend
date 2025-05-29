@@ -23,15 +23,15 @@ public class Product {
     private String description;
     private String brand;
     private BigDecimal price;
-    private int stockQuantity;
-    private boolean availability;
+    private Integer stockQuantity;
+    private Boolean availability;
     private String thumbnailName;
     private String thumbnailType;
     @Lob
     private byte[] thumbnailData;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "fk_category_id")
     private Category category;
 }
